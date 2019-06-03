@@ -52,6 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hero.cs" />
     <Compile Include="ILevel.cs" />
     <Compile Include="Level1.cs" />
     <Compile Include="Program.cs" />
@@ -84,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GenericBlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GenericBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GenericBlock1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
