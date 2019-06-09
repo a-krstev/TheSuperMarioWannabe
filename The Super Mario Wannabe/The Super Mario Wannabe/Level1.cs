@@ -32,6 +32,8 @@ namespace The_Super_Mario_Wannabe
         public int leftBorder { get; set; }
         public int rightBorder { get; set; }
 
+        public int heightOfJump = 65;
+
         public Level1()
         {
             this.hero = new Hero(new Point(5 * blockImage.Width, blockImage.Height));
@@ -54,32 +56,39 @@ namespace The_Super_Mario_Wannabe
 
         public void CheckPhysicalBoundries()
         {
-            if ( (hero.topLeftCorner.Y + hero.height + hero.fallSpeed < firstFloorY) && 
+            if ( ! hero.isJumping )
+            {
+                if ((hero.topLeftCorner.Y + hero.height + hero.fallSpeed < firstFloorY) &&
                  ((firstFloorX1 < hero.topLeftCorner.X && hero.topLeftCorner.X < firstFloorX2) ||
-                 (firstFloorX3 < hero.topLeftCorner.X && hero.topLeftCorner.X < firstFloorX4)) )
-            {
-                hero.Fall();
-                hero.isFalling = true;
+                 (firstFloorX3 < hero.topLeftCorner.X && hero.topLeftCorner.X < firstFloorX4)))
+                {
+                    hero.Fall();
+                    hero.isFalling = true;
+                }
+                else
+                {
+                    hero.isFalling = false;
+                }
+
+                if (((firstFloorX2 < hero.topLeftCorner.X && hero.topLeftCorner.X < firstFloorX3) || isOnSecondFloor) &&
+                    (hero.topLeftCorner.Y + hero.height + hero.fallSpeed < secondFloorY) &&
+                    ((secondFloorX1 < hero.topLeftCorner.X && hero.topLeftCorner.X < secondFloorX2) ||
+                    (secondFloorX3 < hero.topLeftCorner.X && hero.topLeftCorner.X < secondFloorX4)))
+                {
+                    hero.Fall();
+                    isOnFirstFloor = false;
+                    isOnSecondFloor = true;
+
+                    hero.isFalling = true;
+                }
+                else
+                {
+                    hero.isFalling = false;
+                }
             }
             else
             {
-                hero.isFalling = false;
-            }
-
-            if (((firstFloorX2 < hero.topLeftCorner.X && hero.topLeftCorner.X < firstFloorX3) || isOnSecondFloor) &&
-                (hero.topLeftCorner.Y + hero.height + hero.fallSpeed < secondFloorY) &&
-                ((secondFloorX1 < hero.topLeftCorner.X && hero.topLeftCorner.X < secondFloorX2) ||
-                (secondFloorX3 < hero.topLeftCorner.X && hero.topLeftCorner.X < secondFloorX4)))
-            {
-                hero.Fall();
-                isOnFirstFloor = false;
-                isOnSecondFloor = true;
-
-                hero.isFalling = true;
-            }
-            else
-            {
-                hero.isFalling = false;
+                Jump();
             }
         }
 
@@ -121,6 +130,21 @@ namespace The_Super_Mario_Wannabe
         public void MoveHero(Hero.DIRECTION direction)
         {
             hero.Move(direction, leftBorder, rightBorder);
+        }
+
+        public void Jump()
+        {
+            if ( heightOfJump > 0 )
+            {
+                hero.Jump();
+                hero.isJumping = true;
+                heightOfJump -= hero.jumpSpeed;
+            }
+            else
+            {
+                hero.isJumping = false;
+                heightOfJump = 65;
+            }
         }
     }
 }

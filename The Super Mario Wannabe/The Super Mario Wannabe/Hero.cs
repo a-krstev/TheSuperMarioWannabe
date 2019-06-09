@@ -20,8 +20,10 @@ namespace The_Super_Mario_Wannabe
 
         public readonly int fallSpeed = 3;
         public readonly int moveSpeed = 5;
+        public readonly int jumpSpeed = 5;
 
         public bool isFalling { get; set; }
+        public bool isJumping { get; set; }
 
         public Hero(Point topLeftCorner)
         {
@@ -30,12 +32,13 @@ namespace The_Super_Mario_Wannabe
             height = 20;
 
             isFalling = false;
+            isJumping = false;
         }
 
         public void Draw(Graphics g)
         {
             //g.DrawRectangle(new Pen(new SolidBrush(Color.Blue)), topLeftCorner.X, topLeftCorner.Y, width, height);
-            g.FillRectangle(new SolidBrush(Color.Yellow), topLeftCorner.X, topLeftCorner.Y, width, height);
+            g.FillRectangle(new SolidBrush(Color.Black), topLeftCorner.X, topLeftCorner.Y, width, height);
         }
 
         public void Fall()
@@ -43,10 +46,15 @@ namespace The_Super_Mario_Wannabe
             topLeftCorner = new Point(topLeftCorner.X, topLeftCorner.Y + fallSpeed);
         }
 
+        public void Jump()
+        {
+            topLeftCorner = new Point(topLeftCorner.X, topLeftCorner.Y - jumpSpeed);
+        }
+
         public void Move(DIRECTION direction, int leftBorder, int rightBorder)
         {
             int moveSpeed = this.moveSpeed;
-            if ( isFalling )
+            if ( isFalling || isJumping )
             {
                 moveSpeed = moveSpeed - 2;
             }

@@ -13,10 +13,17 @@ namespace The_Super_Mario_Wannabe
     public partial class Form1 : Form
     {
         public Level1 testLevel { get; set; }
+
+        public bool holdingLeft { get; set; }
+        public bool holdingRight { get; set; }
+
         public Form1()
         {
             InitializeComponent();
             this.DoubleBuffered = true;
+
+            holdingLeft = false;
+            holdingRight = false;
 
             testLevel = new Level1();
         }
@@ -34,14 +41,36 @@ namespace The_Super_Mario_Wannabe
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if ( e.KeyCode == Keys.Left )
+            if ( e.KeyCode == Keys.Left || holdingLeft )
             {
                 testLevel.MoveHero(Hero.DIRECTION.Left);
+                //holdingLeft = true;
             }
 
-            if ( e.KeyCode == Keys.Right )
+            if ( e.KeyCode == Keys.Right || holdingRight )
             {
                 testLevel.MoveHero(Hero.DIRECTION.Right);
+                //holdingRight = true;
+            }
+
+            if ( e.Modifiers == Keys.Shift )
+            {
+                testLevel.Jump();
+            }
+
+            Invalidate();
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ( (int)e.KeyChar == 32)
+            {
+                testLevel.Jump();
             }
 
             Invalidate();
